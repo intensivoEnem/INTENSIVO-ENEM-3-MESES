@@ -32,6 +32,24 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       margin-bottom: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .quiz.show, .sales.show {
+      opacity: 1;
+    }
+    .progress {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .feedback {
+      text-align: center;
+      font-style: italic;
+      margin: 10px 0;
+      color: #444;
+      display: none;
     }
     .quiz button, .cta {
       display: block;
@@ -41,14 +59,17 @@
       border: none;
       border-radius: 5px;
       font-size: 16px;
-      background: #6c63ff;
       color: white;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.2s, opacity 0.3s;
     }
     .quiz button:hover, .cta:hover {
-      background: #5548d9;
+      transform: scale(1.03);
+      opacity: 0.9;
     }
+    .btn-green { background: #28a745; }
+    .btn-red { background: #dc3545; }
+    .btn-blue { background: #007bff; }
     .hidden {
       display: none;
     }
@@ -70,32 +91,54 @@
   <div class="container">
 
     <!-- Quiz -->
-    <div class="quiz" id="quiz">
+    <div class="quiz show" id="quiz">
       <h2>Responda rápido:</h2>
+
+      <!-- Pergunta 1 -->
       <div id="q1">
-        <p>Você já começou a estudar para o ENEM?</p>
-        <button onclick="nextQuestion('q2')">Sim</button>
-        <button onclick="nextQuestion('q2')">Ainda não</button>
-        <button onclick="nextQuestion('q2')">Um pouco</button>
+        <p class="progress">Pergunta 1 de 4</p>
+        <p>📚 Você já começou a estudar para o ENEM?</p>
+        <button class="btn-green" onclick="nextQuestion('q2','Ótimo! Você já tem uma base, vamos reforçar.')">Sim</button>
+        <button class="btn-red" onclick="nextQuestion('q2','Sem problemas, o intensivo foi feito para quem está começando agora.')">Ainda não</button>
+        <button class="btn-blue" onclick="nextQuestion('q2','Legal, vamos organizar isso melhor!')">Um pouco</button>
       </div>
+
+      <!-- Pergunta 2 -->
       <div id="q2" class="hidden">
-        <p>Qual é sua maior dificuldade?</p>
-        <button onclick="nextQuestion('q3')">Redação</button>
-        <button onclick="nextQuestion('q3')">Matemática</button>
-        <button onclick="nextQuestion('q3')">Organização</button>
+        <p class="progress">Pergunta 2 de 4</p>
+        <p>🤔 Qual é sua maior dificuldade?</p>
+        <button class="btn-blue" onclick="saveDifficulty('redacao'); nextQuestion('q3','Redação é comum! Nosso intensivo vai te ajudar nisso.')">Redação</button>
+        <button class="btn-green" onclick="saveDifficulty('matematica'); nextQuestion('q3','Matemática pode ser desafiadora, mas você vai conseguir.')">Matemática</button>
+        <button class="btn-red" onclick="saveDifficulty('organizacao'); nextQuestion('q3','Organização é chave, e o cronograma vai te ajudar!')">Organização</button>
       </div>
+
+      <!-- Pergunta 3 -->
       <div id="q3" class="hidden">
-        <p>Você acredita que 3 meses ainda dá tempo?</p>
-        <button onclick="showSales()">Sim, quero tentar!</button>
-        <button onclick="showSales()">Estou com medo, mas quero ajuda</button>
+        <p class="progress">Pergunta 3 de 4</p>
+        <p>⏳ Você acredita que 3 meses ainda dá tempo?</p>
+        <button class="btn-green" onclick="nextQuestion('q4','Perfeito! Vamos aproveitar cada dia ao máximo.')">Sim, quero tentar!</button>
+        <button class="btn-blue" onclick="nextQuestion('q4','Medo é normal, mas com direcionamento dá certo!')">Estou com medo, mas quero ajuda</button>
       </div>
+
+      <!-- Pergunta 4 -->
+      <div id="q4" class="hidden">
+        <p class="progress">Pergunta 4 de 4</p>
+        <p>📖 Você prefere revisar conteúdos ou praticar com exercícios?</p>
+        <button class="btn-green" onclick="showSales('revisao','Revisar é ótimo, e o intensivo já tem os principais resumos!')">Revisar conteúdos</button>
+        <button class="btn-blue" onclick="showSales('exercicios','Exercícios destravam o aprendizado, você terá centenas!')">Praticar exercícios</button>
+        <button class="btn-red" onclick="showSales('ambos','Equilíbrio é tudo, e o intensivo une teoria e prática!')">Um pouco dos dois</button>
+      </div>
+
+      <p class="feedback" id="feedback"></p>
     </div>
 
     <!-- Página de Vendas -->
     <div class="sales hidden" id="sales">
       <h2>🚀 Intensivo ENEM 3 Meses</h2>
-      <p>Você tem 3 meses até a prova e acha que não dá tempo? Ainda dá sim!  
-      Com o nosso intensivo, você vai ter o direcionamento certo para aproveitar cada dia até o ENEM.</p>
+      <p id="personalizedText">
+        Você tem 3 meses até a prova e acha que não dá tempo? Ainda dá sim!  
+        Com o nosso intensivo, você vai ter o direcionamento certo para aproveitar cada dia até o ENEM.
+      </p>
 
       <ul>
         <li>📘 250 exercícios com gabarito</li>
@@ -117,16 +160,46 @@
   </footer>
 
   <script>
-    function nextQuestion(nextId) {
-      const questions = document.querySelectorAll('.quiz > div');
-      questions.forEach(q => q.classList.add('hidden'));
-      document.getElementById(nextId).classList.remove('hidden');
+    let difficulty = "";
+
+    function saveDifficulty(d) {
+      difficulty = d;
     }
 
-    function showSales() {
-      document.getElementById('quiz').classList.add('hidden');
-      document.getElementById('sales').classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function nextQuestion(nextId, feedbackMsg) {
+      const feedback = document.getElementById('feedback');
+      feedback.innerText = feedbackMsg;
+      feedback.style.display = 'block';
+
+      setTimeout(() => {
+        feedback.style.display = 'none';
+        const questions = document.querySelectorAll('.quiz > div');
+        questions.forEach(q => q.classList.add('hidden'));
+        document.getElementById(nextId).classList.remove('hidden');
+      }, 1500);
+    }
+
+    function showSales(choice, feedbackMsg) {
+      const feedback = document.getElementById('feedback');
+      feedback.innerText = feedbackMsg;
+      feedback.style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('quiz').classList.add('hidden');
+        document.getElementById('sales').classList.remove('hidden');
+        document.getElementById('sales').classList.add('show');
+
+        // Texto personalizado com base na dificuldade escolhida
+        const text = document.getElementById('personalizedText');
+        if (difficulty === "redacao") {
+          text.innerText = "O Intensivo inclui 3 propostas de redação pra você treinar e melhorar.";
+        } else if (difficulty === "matematica") {
+          text.innerText = "Você terá acesso a exercícios estratégicos de matemática pra destravar essa parte.";
+        } else if (difficulty === "organizacao") {
+          text.innerText = "Nosso cronograma de estudos pronto vai organizar sua rotina sem complicação.";
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 1500);
     }
   </script>
 </body>
