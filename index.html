@@ -5,121 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Intensivo ENEM 3 Meses</title>
   <style>
-    :root {
-      --brand:#ff5c87;
-      --brand-2:#ff9f43;
-      --bg:#0f0f12;
-      --text:#ffffff;
-    }
     body {
-      margin:0;
-      font-family: 'Arial', sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.6;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
     }
     header {
-      text-align:center;
-      padding:4rem 1rem;
-      background: linear-gradient(135deg,var(--brand),var(--brand-2));
-      color:#fff;
+      background: #6c63ff;
+      color: white;
+      padding: 20px;
+      text-align: center;
     }
-    header h1 {
-      font-size:2.5rem;
-      margin-bottom:1rem;
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
     }
-    header p {
-      font-size:1.2rem;
+    h1, h2 {
+      text-align: center;
     }
-    .price {
-      font-size:1.5rem;
-      margin:1rem 0;
-      font-weight:bold;
+    .quiz, .sales {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
-    .btn {
-      display:inline-block;
-      background:#fff;
-      color:var(--brand);
-      padding:0.8rem 1.5rem;
-      font-size:1.2rem;
-      border-radius:8px;
-      text-decoration:none;
-      font-weight:bold;
-      transition:0.3s;
+    .quiz button, .cta {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background: #6c63ff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    .btn:hover {
-      background:#f1f1f1;
+    .quiz button:hover, .cta:hover {
+      background: #5548d9;
     }
-    section {
-      padding:2rem 1rem;
-      max-width:900px;
-      margin:auto;
-    }
-    h2 {
-      color:var(--brand);
-      margin-bottom:1rem;
-    }
-    ul {
-      list-style: none;
-      padding:0;
-    }
-    ul li {
-      background:#1a1a1d;
-      margin:0.5rem 0;
-      padding:0.8rem;
-      border-radius:6px;
+    .hidden {
+      display: none;
     }
     footer {
-      text-align:center;
-      padding:2rem 1rem;
-      background:#1a1a1d;
-      font-size:0.9rem;
-      color:#ccc;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      background: #f1f1f1;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Intensivo ENEM 3 Meses</h1>
+    <p>Ainda dá tempo de se preparar e conquistar sua vaga!</p>
+  </header>
 
-<header>
-  <h1>3 meses não são 3 dias. Ainda dá tempo de passar no ENEM 🚀</h1>
-  <p><strong>Intensivo ENEM 3 Meses</strong> — seu guia direto, prático e acessível para revisar tudo o que mais cai até o dia da prova.</p>
-  <div class="price">De R$97 por apenas <span style="color:#fff; font-size:2rem;">R$21,90</span></div>
-  <a href="https://pay.sunize.com.br/wxqbfYfe" target="_blank" rel="noopener noreferrer" class="btn">
+  <div class="container">
+
+    <!-- Quiz -->
+    <div class="quiz" id="quiz">
+      <h2>Responda rápido:</h2>
+      <div id="q1">
+        <p>Você já começou a estudar para o ENEM?</p>
+        <button onclick="nextQuestion('q2')">Sim</button>
+        <button onclick="nextQuestion('q2')">Ainda não</button>
+        <button onclick="nextQuestion('q2')">Um pouco</button>
+      </div>
+      <div id="q2" class="hidden">
+        <p>Qual é sua maior dificuldade?</p>
+        <button onclick="nextQuestion('q3')">Redação</button>
+        <button onclick="nextQuestion('q3')">Matemática</button>
+        <button onclick="nextQuestion('q3')">Organização</button>
+      </div>
+      <div id="q3" class="hidden">
+        <p>Você acredita que 3 meses ainda dá tempo?</p>
+        <button onclick="showSales()">Sim, quero tentar!</button>
+        <button onclick="showSales()">Estou com medo, mas quero ajuda</button>
+      </div>
+    </div>
+
+    <!-- Página de Vendas -->
+    <div class="sales hidden" id="sales">
+      <h2>🚀 Intensivo ENEM 3 Meses</h2>
+      <p>Você tem 3 meses até a prova e acha que não dá tempo? Ainda dá sim!  
+      Com o nosso intensivo, você vai ter o direcionamento certo para aproveitar cada dia até o ENEM.</p>
+
+      <ul>
+        <li>📘 250 exercícios com gabarito</li>
+        <li>✍️ 3 propostas de redação</li>
+        <li>🗓️ Cronograma de estudos pronto</li>
+        <li>⭐ Lista dos conteúdos mais importantes</li>
+      </ul>
+
+      <h3>💰 Tudo isso por apenas R$21,90</h3>
+
+      <a href="https://pay.sunize.com.br/wxqbfYfe" target="_blank" rel="noopener noreferrer" class="btn">
   Quero garantir meu Intensivo agora
 </a>
-</header>
+        <button class="cta">Quero garantir minha vaga agora!</button>
+      </a>
+    </div>
+  </div>
 
-<section>
-  <h2>O que você vai receber</h2>
-  <ul>
-    <li>✅ 250 exercícios com gabarito comentado</li>
-    <li>✅ 3 propostas de redação para treinar e subir nota</li>
-    <li>✅ Cronograma pronto para organizar seus 3 meses</li>
-    <li>✅ Lista dos conteúdos que mais caem no ENEM</li>
-    <li>✅ Preço acessível: só R$21,90</li>
-  </ul>
-</section>
+  <footer>
+    <p>© 2025 - Todos os direitos reservados.</p>
+  </footer>
 
-<section>
-  <h2>Pra quem é esse Intensivo?</h2>
-  <ul>
-    <li>👉 Para quem está com medo da proximidade da prova</li>
-    <li>👉 Para quem não sabe por onde começar a revisar</li>
-    <li>👉 Para quem precisa de clareza sobre o que mais cai</li>
-    <li>👉 Para quem quer aumentar as chances em pouco tempo</li>
-  </ul>
-</section>
+  <script>
+    function nextQuestion(nextId) {
+      const questions = document.querySelectorAll('.quiz > div');
+      questions.forEach(q => q.classList.add('hidden'));
+      document.getElementById(nextId).classList.remove('hidden');
+    }
 
-<section>
-  <h2>O diferencial</h2>
-  <p>Enquanto cursinhos cobram caro, o <strong>Intensivo ENEM 3 Meses</strong> entrega conteúdo direcionado e estratégico por apenas <strong>R$21,90</strong>.  
-  Preço acessível, sem enrolação, só o que você precisa até a prova.</p>
-</section>
-
-<footer>
-  <p>© 2025 - Todos os direitos reservados.</p>
-</footer>
-
+    function showSales() {
+      document.getElementById('quiz').classList.add('hidden');
+      document.getElementById('sales').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
 
